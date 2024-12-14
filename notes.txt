@@ -1,0 +1,189 @@
+//define n-dimensional spherical coordinates
+
+For n-dimensional spherical coordinates, we have r, the radial coordinate, $n-2$ angles $\phi_1 \dots \phi_{n-2}$,  which range between [0,$\pi$] and $\phi_{n-1}$ which is between [0, $2\pi$] and is called the azimuthal angle. 
+
+With this we can set up the transformation between cartesian coordinates ($x_1 \dots x_n$) to
+\begin{align}
+    \begin{array}{c}
+        x_1 = r\cos(\phi_1) \\
+        x_2 = r\sin(\phi_1)\cos(\phi_2) \\
+        x_3 = r\sin(\phi_1)\sin(\phi_2)cos(\phi_3) \\
+        \cdot\\
+        \cdot\\
+        \cdot\\
+        x_{n-1} = r\sin(\phi_1)\sin(\phi_2)\dots\sin(\phi_{n-2})\cos(\phi_{n-1}) \\
+        x_{n} = r\sin(\phi_1)\sin(\phi_2)\dots\sin(\phi_{n-2})\sin(\phi_{n-1}) 
+    \end{array}
+\end{align}
+
+We can express the arbitrary coordinate $x_i$ as 
+
+\begin{align}
+    x_i = r\prod_{j=1}^{i-1}sin(\phi_j)cos(\phi_i)
+\end{align}
+
+where  $1 \le i \leq n-1$. 
+
+For $x_n$, we have a different formula. This is because $\phi_{n-1}$ behaves differently from the other angles ?? ??? ?? ? ? ?.
+
+\begin{align}
+    x_n = r\prod_{j=1}^{n-2}sin(\phi_j)sin(\phi_{n-1})
+\end{align}
+
+Once we have this, we can try to compute the Jacobian of our n dimensional spherical coordinates.
+
+\begin{align}
+    J_n =
+    \begin{pmatrix}
+        c_1 & -r s_1 c_2 & 0 & \cdots & 0 \\
+        s_1 c_2 & r c_1 c_2 & -r s_2 c_3 & \cdots & 0 \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        s_1 \cdots s_{n-2} c_{n-1} & r c_1 \cdots c_{n-2} & \cdots & \cdots & -r s_{n-2} s_{n-1} \\
+        s_1 \cdots s_{n-2} c_{n-1} & r s_1 \cdots s_{n-2} & \cdots & \cdots & r s_{n-2} \cdots s_{n-1} c_{n-1}
+    \end{pmatrix}
+\end{align}
+
+//explain that small section dV of 3D spherical space is dV = r² sin(φ) dr dθ dφ, so it stands to reason that n-dimentional dV is (find on wiki)
+
+    I DID THIS ALREADY IN THE LATEX
+
+//we can integrate this to get the total hyper volume
+
+    DIDNT REALLY EVER EXPLAIN THIS
+
+//follow steps simply up to where beta functions appear
+
+
+//define gamma function
+    to complete the next step, we must understand how the gamma and beta function work. The gamma function is defined as Γ(n) = (n-1)!. The purpose of the gamma function is to extend the factorial function to non-integer numbers.This is necessary when applying the formula for the volume of an n-ball when "n" is an odd number.
+    
+//define beta function in terms of gamma function
+    the beta function is then defined as B(x,y)= ∫(0->1) t^(x-1) (1-t)^(y-1) dt. This can also be defined in terms of the gamma function as Γ(x)Γ(y)/Γ(x+y). We can see this relationship by proving that Γ(x)Γ(y) = B(x,y)Γ(x+y).
+    First write Γ(x)Γ(y) as integrals Γ(x)Γ(y) = ∫(0->∞)u^(x-1)e^(-u) du * ∫(0->∞)v^(y-1)e^(-v) dv
+    We can re-write this as ∫(0->∞) u^(x-1) v^(y-1) (e^(-u-v) dudv
+    Now change variables using G(s,t) where u=st and v=s(1-t) and where the |Jac(G)| = s
+    We can the bounds for this would be 0<=s<=∞, 0<=t<=1
+    Write new integral as ∫(0->1)∫(0->∞) (st)^(x-1) s^(y-1) (1-t)^(y-1) e^(-st-s+st) s dsdt
+    This can be split up into ∫(0->1)(1-t)^(y-1) dt * ∫(0->∞) s^(x-1) s(y-1) e^(-s) ds
+    Which we can see is B(x,y)Γ(x+y)
+    This proves how the Beta function is related to the gamma function
+    
+    
+    
+//explain how we can sub in beta functions
+    ALTERNATE EXPLANATION USING SIN DEF OF BETA FUNCTION (GIVEN BY CLAUDE) 
+                Let me explain how we recognize that Beta functions appear in these integrals. The key is recognizing a pattern in integrals of powers of sine.
+            
+            The integrals we're dealing with are of the form:
+            ∫₀ᵗ/² sinᵏ(φ) dφ  (where k varies from n-2 down to 1)
+            
+            The Beta function B(x,y) has a special representation in terms of sine:
+            B(x,y) = 2∫₀ᵗ/² sin²ˣ⁻¹(φ) cos²ʸ⁻¹(φ) dφ
+            
+            Now, here's the crucial insight. When y = 1/2, cos²ʸ⁻¹(φ) = 1, so:
+            B(x,1/2) = 2∫₀ᵗ/² sin²ˣ⁻¹(φ) dφ
+            
+            Looking at our original integrals:
+            ∫₀ᵗ/² sinⁿ⁻²(φ₁) dφ₁
+            ∫₀ᵗ/² sinⁿ⁻³(φ₂) dφ₂
+            etc.
+            
+            We can match these to the Beta function form:
+            - For sinⁿ⁻²(φ₁): x = (n-1)/2 gives us B((n-1)/2, 1/2)
+            - For sinⁿ⁻³(φ₂): x = (n-2)/2 gives us B((n-2)/2, 1/2)
+            And so on...
+            
+            This recognition lets us convert all our difficult sine integrals into Beta functions, which can then be expressed in terms of Gamma functions - a more manageable form.
+
+
+    Beta Function B(x,y) and Angular Integral Ik
+        B(x,y) = ∫(0->1) t^(x-1) (1-t)^(y-1) dt
+        Ik = ∫(0->π) (sinφ)^k dφ, k ≃ n
+    Symmetrical properties of Sine.
+        Ik = 2 ∫(0->π/2) (sinφ)^k dφ
+    substitute t = sin^2(φ)
+        sin^2(φ) = t --> t^1/2 = sinφ
+        1 - cos^2(φ) = t --> cos^2(φ) = 1 - t --? cosφ = (1 - t)^1/2
+        dt = 2 sinφ cosφ dφ -> dφ = dt / (2 sinφ cosφ) -> dφ = dt / (2 t^1/2 (1-t)^1/2)
+    Find bounds of t.
+        When φ = π/2, sin^2(π/2) = t = 1.
+        When φ = 0, sin^2(0) = t = 0.
+    Using information above. Convert Angular Integral Ik from terms of φ to terms of t.
+        Ik = 2 ∫(0->π/2) (sinφ)^k dφ -> Ik = 2 ∫(0->1) (t^1/2)^k / (2 t^(1/2) (1-t)^(1/2)) dt
+    Simplify Angular Integral Ik.
+        Ik = ∫(0->1) (t)^(k/2) t^(-1/2) (1-t)^(-1/2) dt -> Ik = ∫(0->1) (t)^(k/2 - 1/2) (1-t)^(-1/2) dt
+    Recognize that the Angular Integral Ik looks similar to the Beta Function B(x,y). We can find the values of x and y.
+        x = (k+1) / 2
+        y = 1 / 2
+    We can substitute the remaining integrals in Vn(R) with B((k+1)/2, 1/2). We can assume k = n - 2 for the first integral, then k = n - 3 for the second integral.
+        Vn(R) = (R^(n)/n) (2∫(0->π/2)(sinφ1)^n-2 dφ1) (2∫(0->π/2)(sin2)^n-3 dφ2) ... (∫(0->2π) dφn-1) -> Vn(R) = (R^(n)/n) B((n - 1)/2, 1 / 2) B((n - 2) / 2, 1/2) ... 2B(1 / 2, 1 / 2)
+        
+    B(x,y) = ∫(0->1) t^(x-1) (1-t)^(y-1) dt --> B(x,y) = ∫(0->π) (sin^2(φ))^(x-1) (cos^2(φ))^(y-1) 2 sinφ cosφ dφ --> B(x,y)
+    end up with Vn(R)=(R^(n)/n) B((n−1)/2,1/2)B((n−2)/2,1/2)B((n−3)/2,1/2)⋯B(1,1/2)⋅2B(1/2,1/2).
+
+//sub these out for gamma function equivalents
+    lets rewrite these beta functions as Vn(R)=(R^(n)/n) B((n/2)-(1/2) ,1/2)  B((n/2)-(2/2) ,1/2)  B((n/2)-(3/2) ,1/2)⋯B(1,1/2)⋅2B(1/2,1/2
+    becuase earlier we proved that the Beta function B(x,y) = Γ(x)Γ(y)/Γ(x+y), we can see that this is able to be rewritten in terms of gamma functions
+    
+
+
+//using gamma function properties, rewrite generally
+    this is done in the tex file
+    
+    blah blah blah, show first steps here 
+    finally, (refer to photo on nathan's phone for how to go between last two steps on wiki)
+
+//explain how this accounts for different odd and even "n"
+
+    The formula derived for the volume of a sphere in nth-dimension can be categorized by whether "n" is odd or even. The gamma function term (Γ((n/2)+1)) behaves differently depending if it is a gamma function of a integer or half-integer. 
+    For half-integer gamma function, Γ(n/2) = sqrt(π)*((n-2)!!/2^((n-1)/2)).
+     n!! denotes a double factorial
+    For integer gamma functions, Γ(n) = (n/2)!
+    Even n dimensions result in positive integer arguments for the gamma function
+    Odd n dimensions result in positive half-integer arguments for the gamma function.
+    Note that these are all non-negative arguments for the gamma function as n cannot be zero or negative.
+    
+    Formula for the volume of "n" spheres = (((π^(n/2))*(R^n))/(Γ((n/2)+1)))
+    
+    Formula for the volume of even "n" spheres = (π^(n/2)*(R^2))/((n/2)!)
+        Since Γ((n/2)+1), for all even integers of n the gamma function will give out values for integers. Γ(n/2)+1) can be rewritten as (n/2)!. 
+        
+    Formula for the volume of odd "n" spheres = ((π^(n/2)*(R^2))/(((sqrtπ)(n!!))/(2^((n+!)/2))))
+        The same idea applies for the formula to find the volume of even "n" spheres except that the gamma function will give out values for half-integers. Since half-integers give out different values for the gamma function than normal integers, the gamma function has to be written out differently for off "n" spheres. 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

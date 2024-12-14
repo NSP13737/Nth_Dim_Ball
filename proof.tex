@@ -1,13 +1,225 @@
 %start of proof
 
 \documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{enumerate}% http://ctan.org/pkg/enumerate
+\usepackage[margin=1in]{geometry}
 
-
-
-\title{Volume of n-balls} 
-\author{Josh O'Connor}      
+\title{Volume of an n-ball} 
+\author{Josh O'Connor, Nathan Phillips, Luke Hui, Xheonray Jhoey Arnado, Carson Crusinberry}      
 \date{December 9th 2024} 
 
 \begin{document}
-Hello There!
+\maketitle
+
+Let $S(n)$ be a sphere of radius $R$ in $\mathbb{R}^n$ centered at the origin. How can we calculate the volume of $S(n)$?
+
+We know the case for calculating the volume of a sphere in $\mathbb{R}^3$. We evaluate the triple integral 
+    \begin{align*}
+    \int\int\int_S\,dV. 
+    \end{align*}
+    After applying a spherical coordinate transformation, we get 
+    \begin{align*}
+    \int_0^{2\pi}\int_0^{\pi}\int_0^{\rho}\rho^2\sin(\theta)\,d\rho\,d\phi\,d\theta 
+    \end{align*}
+
+It follows from this notion of volume in $\mathbb{R}^3$ that to compute the volume of $S(n)$, we will need to evaluate
+
+    \begin{align*}
+        \int\int\cdot\cdot\cdot\int_S\,d^nV
+    \end{align*}
+    
+    To calculate this volume, we have three tasks:
+    \begin{enumerate}
+        \item Set up spherical coordinates for n dimensions
+        \item Compute the Jacobian of this coordinate transformation
+        \item Evaluate the resulting integral
+    \end{enumerate}
+    
+\section*{$n$-dimensional Spherical Coordinates}    
+For $n$-dimensional spherical coordinates, we have $r$, the radial coordinate, $n-2$ angles $\phi_1, \phi_2, \dots, \phi_{n-2}$, which range between $[0, \pi]$, and $\phi_{n-1}$, which ranges between $[0, 2\pi]$ and is called the azimuthal angle.
+
+
+
+With this we can set up the transformation between cartesian coordinates ($x_1 \dots x_n$) to
+\begin{align*}
+    \begin{array}{c}
+        x_1 = r\cos(\phi_1) \\
+        x_2 = r\sin(\phi_1)\cos(\phi_2) \\
+        x_3 = r\sin(\phi_1)\sin(\phi_2)cos(\phi_3) \\
+        \cdot\\
+        \cdot\\
+        \cdot\\
+        x_{n-1} = r\sin(\phi_1)\sin(\phi_2)\dots\sin(\phi_{n-2})\cos(\phi_{n-1}) \\
+        x_{n} = r\sin(\phi_1)\sin(\phi_2)\dots\sin(\phi_{n-2})\sin(\phi_{n-1}) 
+    \end{array}
+\end{align*}
+\begin{comment}
+We can express the arbitrary coordinate $x_i$ as 
+
+\begin{align*}
+    x_i = r\prod_{j=1}^{i-1}sin(\phi_j)cos(\phi_i)
+\end{align*}
+
+where  $1 \le i \leq n-1$. 
+
+For $x_n$, we have a different formula. This is because $\phi_{n-1}$ behaves differently from the other angles.
+
+\begin{align*}
+    x_n = r\prod_{j=1}^{n-2}sin(\phi_j)sin(\phi_{n-1})
+\end{align*}
+\end{comment}
+Once we have this, we can try to compute the Jacobian of our n dimensional spherical coordinates.
+
+\section*{Jacobian of $n$-dimensional spherical coordinate transformation}   
+\begin{align*}
+    J_n =
+    \begin{bmatrix}
+        c_1 & -r s_1 c_2 & 0 & \cdots & 0 \\
+        s_1 c_2 & r c_1 c_2 & -r s_2 c_3 & \cdots & 0 \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        s_1 \cdots s_{n-2} c_{n-1} & r c_1 \cdots c_{n-2} & \cdots & \cdots & -r s_{n-2} s_{n-1} \\
+        s_1 \cdots s_{n-2} c_{n-1} & r s_1 \cdots s_{n-2} & \cdots & \cdots & r s_{n-2} \cdots s_{n-1} c_{n-1}
+    \end{bmatrix}
+\end{align*}
+
+The determinant using a technique called Laplace expansion of which we are not familiar. This takes us to the following equation:
+
+\begin{align*}
+    |J_n| = (r\sin(\phi_1)\dots\sin(\phi_{n-2})\cdot|J_{n-1}|
+\end{align*}
+
+This is a recursive relation of the Jacobian. Let's investigate this a little further. One can easiy see that for $n=2$, our Jacobian $|J_2| = r$.
+
+From our recursive relation, we know 
+
+\begin{align*}
+|J_3| = r\sin(\phi_1)|J_2| = r^2\sin(\phi_1)
+\end{align*}
+
+Let's use this to compute $J_4$. 
+\begin{align*}
+|J_4| = r\sin(\phi_1)\sin(\phi_2)|J_3| = r^3\sin^2(\phi_1)\sin(\phi_2)
+\end{align*}
+
+Now for $J_5$:
+\begin{align*}
+|J_4| = r\sin(\phi_1)\sin(\phi_2)\sin(\phi_2)|J_4| = r^4\sin^3(\phi_1)\sin^2(\phi_2)\sin(\phi_3)
+\end{align*}
+
+We can clearly see a pattern arising.
+
+\begin{align*}
+    |J_n| = r^{n-1}\sin^{n-2}(\phi_1)\sin^{n-3}(\phi_2)\dots\sin(\phi_{n-2})
+\end{align*}
+
+We know the volume element in our integral $d^nV$ equal to $|J_n|$ multiplied by the differtials for each quantity we are integrating, so we have
+\begin{align*}
+    d^nV = |J_n|\,dr\,d\phi_1\,d\phi_2\dots\,d\phi_{n-1} =r^{n-1}\sin^{n-2}(\phi_1)\sin^{n-3}(\phi_2)\dots\sin(\phi_{n-2})\,dr\,d\phi_1\,d\phi_2\dots\,d\phi_{n-1}
+\end{align*}
+
+This lets us set up our integral as
+
+\begin{align*}
+\int_{0}^{R}\int_{0}^{\pi}\dots\int_{0}^{2\pi}r^{n-1}\sin^{n-2}(\phi_1)\sin^{n-3}(\phi_2)\dots\sin(\phi_{n-2})\,d\phi_{n-1}\dots\,d\phi_1\,dr
+\end{align*}
+
+Since these are all separate quantities, lets write this as a product of integrals.
+
+\begin{align*}
+    \int_{0}^{R}r^{n-1}\,dr\int_{0}^{\pi}\sin^{n-2}(\phi_1)d\phi_1\dots\int_{0}^{2\pi}d\phi_{n-1}
+\end{align*}
+
+
+
+
+
+
+
+
+\section*{Define gamma function}
+To complete the next step, we must understand how the gamma and beta function work. The gamma function is defined as $\Gamma(n) = (n-1)!$. The purpose of the gamma function is to extend the factorial function to non-integer numbers. This is necessary when applying the formula for the volume of an $n$-ball when ``$n$'' is an odd number.
+
+\section*{Define beta function in terms of gamma function}
+The beta function is then defined as 
+\[
+B(x,y) = \int_0^1 t^{x-1}(1-t)^{y-1}\,dt
+\]
+This can also be defined in terms of the gamma function as
+\[
+\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}
+\]
+We can see this relationship by proving that $\Gamma(x)\Gamma(y) = B(x,y)\Gamma(x+y)$.
+
+First write $\Gamma(x)\Gamma(y)$ as integrals:
+\[
+\Gamma(x)\Gamma(y) = \int_0^\infty u^{x-1}e^{-u}\,du \cdot \int_0^\infty v^{y-1}e^{-v}\,dv
+\]
+
+We can re-write this as:
+\[
+\int_0^\infty\int_0^\infty u^{x-1}v^{y-1}e^{-(u+v)}\,du\,dv
+\]
+
+Now change variables using $G(s,t)$ where $u=st$ and $v=s(1-t)$ and where the $|\text{Jac}(G)| = s$. The bounds for this would be $0\leq s\leq\infty$, $0\leq t\leq 1$.
+
+Write new integral as:
+\[
+\int_0^1\int_0^\infty (st)^{x-1}s^{y-1}(1-t)^{y-1}e^{-st-s+st}s\,ds\,dt
+\]
+
+This can be split up into:
+\[
+\int_0^1(1-t)^{y-1}\,dt \cdot \int_0^\infty s^{x+y-1}e^{-s}\,ds
+\]
+
+Which we can see is $B(x,y)\Gamma(x+y)$. This proves how the Beta function is related to the gamma function.
+
+
+
+\section*{Rewriting beta functions in terms of gamma functions and general formula}
+The beta functions can be rewritten in terms of gamma functions:
+\[
+V_n(R)=\frac{R^n}{n} \cdot \frac{\Gamma(\frac{n}{2}-\frac{1}{2})\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2})} \cdot \frac{\Gamma(\frac{n}{2}-1)\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2}-\frac{1}{2})} \cdot \frac{\Gamma(\frac{n}{2}-\frac{3}{2})\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2}-1)} \cdots \frac{\Gamma(1)\Gamma(\frac{1}{2})}{\Gamma(\frac{3}{2})} \cdot \frac{2\Gamma(\frac{1}{2})\Gamma(\frac{1}{2})}{\Gamma(1)}
+\]
+Most of the Gamma terms in the series expansion cancel, and using the properties of the Gamma function, $\Gamma(\tfrac{1}{2}) = \sqrt{\pi}$ and $\Gamma(1) = 1$ we can see that,
+
+In the numerator we are left with (n-1) copies of $\Gamma(\frac{1}{2}) = \sqrt{\pi}$ and a factor of 2
+
+In the denomenator we are left just with $\Gamma(\frac{n}{2})$
+
+Due to term cancellation in the series expansion, we are left with \[V_n(R)=
+\frac{R^n}{n} \cdot \frac{2\cdot(\sqrt{\pi})^{n-1}}{\Gamma(\frac{n}{2})} = \frac{2R^n(\sqrt{\pi})^{n-1}}{n\Gamma(\frac{n}{2})}
+\] as the intermediate terms cancel out.  The applying the functional equation $z\Gamma(z) = \Gamma(z + 1)$, this leads to:
+
+\[
+V_n(R)=\frac{2\pi^{n/2}R^n}{n\Gamma(\frac{n}{2})}=\frac{\pi^{n/2}R^n}{\frac{n}{2}\Gamma(\frac{n}{2})}=\frac{\pi^{n/2}R^n}{\Gamma(\frac{n}{2}+1)}
+\]
+
+
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

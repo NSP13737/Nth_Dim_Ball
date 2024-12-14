@@ -1,1 +1,23 @@
 Citations:
+
+proving the Beta function from the Gamma function: https://www.youtube.com/watch?v=E9sc1FnJF9k&ab_channel=PhysicsandMathLectures
+
+
+AI Explanation of how gamma function accounts for different even and odd dimentions
+
+
+'''
+Ah, this proof actually does handle the even/odd dimension cases implicitly through the Gamma function! The final result:
+Vₙ(R) = πⁿ/²Rⁿ/Γ(n/2+1)
+contains Γ(n/2+1), where n/2 will be either an integer (for even n) or a half-integer (for odd n). The Gamma function behaves differently in these two cases:
+
+For even n, n/2 is an integer k, so Γ(k+1) = k!
+For odd n, n/2 is a half-integer k+1/2, so Γ(k+3/2) involves factors of √π
+
+The apparent uniformity of the formula masks this even/odd distinction because it's all handled automatically by the properties of the Gamma function. The distinction becomes more visible if you try to evaluate specific cases:
+For n=2: V₂(R) = πR²/Γ(2) = πR² (as Γ(2)=1)
+For n=3: V₃(R) = π^(3/2)R³/Γ(5/2) = 4πR³/3
+For n=4: V₄(R) = π²R⁴/Γ(3) = π²R⁴/2
+For n=5: V₅(R) = π^(5/2)R⁵/Γ(7/2) = 8π²R⁵/15
+So while other proofs might make the even/odd distinction explicit in their approach, this proof elegantly unifies both cases through the Gamma function. Would you like me to show how the Gamma function evaluations work out differently for even versus odd dimensions?
+'''
