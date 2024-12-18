@@ -52,7 +52,32 @@ Once we have this, we can try to compute the Jacobian of our n dimensional spher
     DIDNT REALLY EVER EXPLAIN THIS
 
 //follow steps simply up to where beta functions appear
+Simplify the equation
 
+Vn(R) = (∫(0->R) r^(n-1)dr) (∫(0->π) sin(phi_1)^(n-2) dphi_1) ... (∫(0->2π) drho_{n-1})
+∫(0->R)r^(n-1)dr = (R^n)/n
+∫(0->π) sin(phi_1)^(n-2)dphi_1 = 2 ∫(0->π/2) sin(phi_1)^(n-2) dphi_1
+    % symmetry of sine
+∫(0->2π) drho_{n-1} = 4 ∫(0->π/2) drho_{n-1}
+    % We keep the last integral instead of fully integrating it in order to oblige to the telescoping properties of the final equation.
+Vn(R) = (R^n)/n 2∫(0->π/2)sin(phi_1)^(n-2) dphi_1 ... 4∫(0->π/2) drho_{n-1}
+
+We will be using the angular integral Ik to reveal the beta function B(x,y) in Vn(R)
+    Ik = 2 ∫(0->π/2) sinᵏ(ɸ) dɸ (where k varies from n-2 down to 1) 
+        % basically reformatted ∫(0->π) sin(phi_1)^(n-2) dphi_1
+    B(x,y) = ∫(0->1) t^(x-1) (1-t)^(y-1) dt
+    sin^2(ɸ) = ɸ
+    cos^2(ɸ) = 1 - ɸ
+    dt = 2 sinφ cosφ dφ
+Converting B(x,y) into terms of sine.
+    B(x,y) = ∫(0->π/2) (sin(ɸ)^(2x-2) cos(ɸ)^(2x-2)) (2 sin(ɸ) cos(ɸ)) dɸ -> B(x,y) = 2 ∫(0->π/2) (sin(ɸ)^(2x-1) cos(ɸ)^(2x-1)) dɸ
+Notice that when y = 1/2, cos(ɸ)^(2y-1) = 1. So, B(x, 1/2) = B
+    B(x,1/2) = 2 ∫(0->π/2) (sin(ɸ)^(2x-1)) dɸ
+    B(x,1/2) = Ik
+Recall k of Ik = n-2. Knowing this, we can find x of B(x,1/2) from 2x-1 = k = n-2. Thus, x = (n-1)/2
+We then substitute this equation back into Vn(R)
+    Vn(R) = Vn(R) = (R^n)/n B((n-1)/2, 1/2) ... 4∫(0->π/2) drho_{n-1}
+Thus, the Beta Function has been revealed.
 
 //define gamma function
     to complete the next step, we must understand how the gamma and beta function work. The gamma function is defined as Γ(n) = (n-1)!. The purpose of the gamma function is to extend the factorial function to non-integer numbers.This is necessary when applying the formula for the volume of an n-ball when "n" is an odd number.
@@ -71,7 +96,7 @@ Once we have this, we can try to compute the Jacobian of our n dimensional spher
     
     
 //explain how we can sub in beta functions
-    ALTERNATE EXPLANATION USING SIN DEF OF BETA FUNCTION (GIVEN BY CLAUDE) 
+    ALTERNATE EXPLANATION USING SIN DEF OF BETA FUNCTION (GIVEN BY CLAUDE) NOTE(₀ᵗ/² should be 0 to pi/2)
                 Let me explain how we recognize that Beta functions appear in these integrals. The key is recognizing a pattern in integrals of powers of sine.
             
             The integrals we're dealing with are of the form:
@@ -121,6 +146,8 @@ Once we have this, we can try to compute the Jacobian of our n dimensional spher
     B(x,y) = ∫(0->1) t^(x-1) (1-t)^(y-1) dt --> B(x,y) = ∫(0->π) (sin^2(φ))^(x-1) (cos^2(φ))^(y-1) 2 sinφ cosφ dφ --> B(x,y)
     end up with Vn(R)=(R^(n)/n) B((n−1)/2,1/2)B((n−2)/2,1/2)B((n−3)/2,1/2)⋯B(1,1/2)⋅2B(1/2,1/2).
 
+
+
 //sub these out for gamma function equivalents
     lets rewrite these beta functions as Vn(R)=(R^(n)/n) B((n/2)-(1/2) ,1/2)  B((n/2)-(2/2) ,1/2)  B((n/2)-(3/2) ,1/2)⋯B(1,1/2)⋅2B(1/2,1/2
     becuase earlier we proved that the Beta function B(x,y) = Γ(x)Γ(y)/Γ(x+y), we can see that this is able to be rewritten in terms of gamma functions
@@ -150,6 +177,19 @@ Once we have this, we can try to compute the Jacobian of our n dimensional spher
         
     Formula for the volume of odd "n" spheres = ((π^(n/2)*(R^2))/(((sqrtπ)(n!!))/(2^((n+!)/2))))
         The same idea applies for the formula to find the volume of even "n" spheres except that the gamma function will give out values for half-integers. Since half-integers give out different values for the gamma function than normal integers, the gamma function has to be written out differently for off "n" spheres. 
+        
+        
+        
+        
+        
+
+//conclusion
+
+We found it very interesting to prove this function spherically. 
+    * even and odd functions acocunted for in one function
+    * interesting telescopign nature
+    * interesting that it goes to 0
+    * 
     
 
 

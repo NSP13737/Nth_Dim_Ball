@@ -2,6 +2,9 @@ Citations:
 
 proving the Beta function from the Gamma function: https://www.youtube.com/watch?v=E9sc1FnJF9k&ab_channel=PhysicsandMathLectures
 
+https://math.libretexts.org/Bookshelves/Analysis/Complex_Variables_with_Applications_(Orloff)/14%3A_Analytic_Continuation_and_the_Gamma_Function/14.02%3A_Definition_and_properties_of_the_Gamma_function
+
+
 
 AI Explanation of how gamma function accounts for different even and odd dimentions
 

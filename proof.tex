@@ -8,14 +8,14 @@
 \usepackage{enumerate}% http://ctan.org/pkg/enumerate
 \usepackage[margin=1in]{geometry}
 
-\title{Volume of an n-ball} 
+\title{Volume of an n-ball using spherical coordinates} 
 \author{Josh O'Connor, Nathan Phillips, Luke Hui, Xheonray Jhoey Arnado, Carson Crusinberry}      
-\date{December 9th 2024} 
+\date{December 19th 2024} 
 
 \begin{document}
 \maketitle
 
-Let $S(n)$ be a sphere of radius $R$ in $\mathbb{R}^n$ centered at the origin. How can we calculate the volume of $S(n)$?
+Let $S(n)$ be a sphere of radius $R$ in $\mathbb{R}^n$ centered at the origin. How can we calculate the hyper volume of $S(n)$?
 
 We know the case for calculating the volume of a sphere in $\mathbb{R}^3$. We evaluate the triple integral 
     \begin{align*}
@@ -130,7 +130,7 @@ This lets us set up our integral as
 Since these are all separate quantities, lets write this as a product of integrals.
 
 \begin{align*}
-    \int_{0}^{R}r^{n-1}\,dr\int_{0}^{\pi}\sin^{n-2}(\phi_1)d\phi_1\dots\int_{0}^{2\pi}d\phi_{n-1}
+    V_n(R) = \int_{0}^{R}r^{n-1}\,dr\int_{0}^{\pi}\sin^{n-2}(\phi_1)d\phi_1\dots\int_{0}^{2\pi}d\phi_{n-1}
 \end{align*}
 
 
@@ -140,19 +140,39 @@ Since these are all separate quantities, lets write this as a product of integra
 
 
 
-\section*{Define gamma function}
-To complete the next step, we must understand how the gamma and beta function work. The gamma function is defined as $\Gamma(n) = (n-1)!$. The purpose of the gamma function is to extend the factorial function to non-integer numbers. This is necessary when applying the formula for the volume of an $n$-ball when ``$n$'' is an odd number.
 
-\section*{Define beta function in terms of gamma function}
+\section*{Tangent on gamma and beta functions}
+To complete the next step of the proof, we must understand how the gamma and beta function work. 
+
+\subsubsection*{The gamma function}
+The gamma function is defined as 
+
+\[\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}\,dt\]
+
+which can also be understood as $\Gamma(n) = (n-1)!$. The purpose of the gamma function is to extend the factorial function to non-integer numbers. This becomes necessary when applying the formula for the volume of an $n$-ball when ``$n$'' is an odd number. We also list some important properties of the gamma function below which will come in handy later.
+\begin{enumerate}
+\item Functional equation: 
+    \[z\Gamma(z) = \Gamma(z+1)\]
+
+\item Special values:
+    \[\Gamma(1) = 1\]
+    \[\Gamma(\tfrac{1}{2}) = \sqrt{\pi}\]
+
+\end{enumerate}
+
+
+
+\subsubsection*{The beta function}
 The beta function is then defined as 
 \[
 B(x,y) = \int_0^1 t^{x-1}(1-t)^{y-1}\,dt
 \]
-This can also be defined in terms of the gamma function as
+The function is special because it can also be defined in terms of the gamma function. In this way it is defined as,
 \[
 \frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}
 \]
-We can see this relationship by proving that $\Gamma(x)\Gamma(y) = B(x,y)\Gamma(x+y)$.
+We can prove this relationship by showing that $\Gamma(x)\Gamma(y) = B(x,y)\Gamma(x+y)$.
+
 
 First write $\Gamma(x)\Gamma(y)$ as integrals:
 \[
@@ -176,28 +196,75 @@ This can be split up into:
 \int_0^1(1-t)^{y-1}\,dt \cdot \int_0^\infty s^{x+y-1}e^{-s}\,ds
 \]
 
-Which we can see is $B(x,y)\Gamma(x+y)$. This proves how the Beta function is related to the gamma function.
+Which we can see is $B(x,y)\Gamma(x+y)$, proving that this is a valid definition of the Beta function.
 
 
 
-\section*{Rewriting beta functions in terms of gamma functions and general formula}
-The beta functions can be rewritten in terms of gamma functions:
+\section*{Rewriting our integral in terms of the Beta function}
+
+
+Picking up where we left off, 
+
+\[V_n(R) = \int_0^R r^{n-1}dr \cdot \int_0^\pi \sin(\phi_1)^{n-2} d\phi_1 \cdots \int_0^{2\pi} d\rho_{n-1}\]
+
+We see that $\int_0^R r^{n-1}dr = \frac{R^n}{n}$, and by the symmetry of sine, $\int_0^\pi \sin(\phi_1)^{n-2}d\phi_1 = 2 \int_0^{\pi/2} \sin(\phi_1)^{n-2} d\phi_1$, and also that $\int_0^{2\pi} d\rho_{n-1} = 2\pi$ Leaving us with,
+
+\[V_n(R) = \frac{R^n}{n} \cdot 2\int_0^{\pi/2}\sin(\phi_1)^{n-2} d\phi_1 \cdots 2\pi\]
+
+We will be using the angular integral $I_k$ to reveal the beta function $B(x,y)$ in $V_n(R)$
+
+\[I_k = 2 \int_0^{\pi/2} \sin^k(\phi) \, d\phi \text{ (where k varies from n-2 down to 1)}\]
+
+$I_k$ is basically reformatted $\int_0^\pi \sin(\phi_1)^{n-2} d\phi_1$ from the $V_n(R)$
+
+\[B(x,y) = \int_0^1 t^{x-1} (1-t)^{y-1} dt\]
+
+\[\sin^2(\phi) = t\]
+\[\cos^2(\phi) = 1 - t\]
+\[dt = 2\sin\phi \cos\phi \, d\phi\]
+
+Converting $B(x,y)$ into terms of sine:
+
+\begin{align*}
+B(x,y) &= \int_0^{\pi/2} (\sin(\phi)^{2x-2} \cos(\phi)^{2x-2})(2\sin(\phi)\cos(\phi)) \, d\phi \\
+&\rightarrow B(x,y) = 2 \int_0^{\pi/2} (\sin(\phi)^{2x-1} \cos(\phi)^{2x-1}) \, d\phi
+\end{align*}
+
+Notice that when $y = \frac{1}{2}$, $\cos(\phi)^{2y-1} = 1$. So:
+
+\[B(x,\frac{1}{2}) = 2 \int_0^{\pi/2} (\sin(\phi)^{2x-1}) \, d\phi\]
+\[B(x,\frac{1}{2}) = I_k\]
+
+Recall $k$ of $I_k = n-2$. Knowing this, we can find $x$ of $B(x,\frac{1}{2})$ from $2x-1 = k = n-2$. Thus, $x = \frac{n-1}{2}$ which gives us $B(\frac{n-1}{2}, \frac{1}{2})$
+
+We then substitute this Beta function $B(\frac{n-1}{2}, \frac{1}{2})$ back into $V_n(R)$ for $2\int_0^{\pi/2}\sin(\phi_1)^{n-2} d\phi_1$:
+
+\[V_n(R) = \frac{R^n}{n} \cdot B(\frac{n-1}{2}, \frac{1}{2}) \cdots 2\pi\]
+
+Thus, the Beta Function has been revealed. 
+
+
+
+The beta functions can be rewritten in terms of gamma functions, which we expand to a few terms for the sake of visuzalizing the next step:
 \[
-V_n(R)=\frac{R^n}{n} \cdot \frac{\Gamma(\frac{n}{2}-\frac{1}{2})\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2})} \cdot \frac{\Gamma(\frac{n}{2}-1)\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2}-\frac{1}{2})} \cdot \frac{\Gamma(\frac{n}{2}-\frac{3}{2})\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2}-1)} \cdots \frac{\Gamma(1)\Gamma(\frac{1}{2})}{\Gamma(\frac{3}{2})} \cdot \frac{2\Gamma(\frac{1}{2})\Gamma(\frac{1}{2})}{\Gamma(1)}
+V_n(R)=\frac{R^n}{n} \cdot \frac{\Gamma(\frac{n}{2}-\frac{1}{2})\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2})} \cdot \frac{\Gamma(\frac{n}{2}-1)\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2}-\frac{1}{2})} \cdot \frac{\Gamma(\frac{n}{2}-\frac{3}{2})\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2}-1)} \cdots \frac{\Gamma(1)\Gamma(\frac{1}{2})}{\Gamma(\frac{3}{2})} \cdot 2\pi
 \]
 Most of the Gamma terms in the series expansion cancel, and using the properties of the Gamma function, $\Gamma(\tfrac{1}{2}) = \sqrt{\pi}$ and $\Gamma(1) = 1$ we can see that,
 
-In the numerator we are left with (n-1) copies of $\Gamma(\frac{1}{2}) = \sqrt{\pi}$ and a factor of 2
+In the numerator we are left with ($n$-2) copies of $\Gamma(\frac{1}{2}) = \sqrt{\pi}$ and a factor of $2\pi$
 
 In the denomenator we are left just with $\Gamma(\frac{n}{2})$
 
-Due to term cancellation in the series expansion, we are left with \[V_n(R)=
-\frac{R^n}{n} \cdot \frac{2\cdot(\sqrt{\pi})^{n-1}}{\Gamma(\frac{n}{2})} = \frac{2R^n(\sqrt{\pi})^{n-1}}{n\Gamma(\frac{n}{2})}
-\] as the intermediate terms cancel out.  The applying the functional equation $z\Gamma(z) = \Gamma(z + 1)$, this leads to:
+In total, due to term cancellation in the series expansion, we are left with \[V_n(R)=
+\frac{R^n}{n} \cdot \frac{2\pi\cdot(\sqrt{\pi})^{n-2}}{\Gamma(\frac{n}{2})} = \frac{2R^n(\sqrt{\pi})^{n}}{n\Gamma(\frac{n}{2})}
+\] as the intermediate terms cancel out.  Then applying the functional equation $z\Gamma(z) = \Gamma(z + 1)$, this leads to:
 
 \[
 V_n(R)=\frac{2\pi^{n/2}R^n}{n\Gamma(\frac{n}{2})}=\frac{\pi^{n/2}R^n}{\frac{n}{2}\Gamma(\frac{n}{2})}=\frac{\pi^{n/2}R^n}{\Gamma(\frac{n}{2}+1)}
 \]
+
+\section*{Showing general formulas for even and odd $n$}
+As we apply this formula towards solving volumes in $n$ dimensions, you will notice that the function behaves differently for even and odd $n$. To show this behavior, we find two separate functions derived from this general expression, which can be used for an even or odd $n$.
 
 
 \end{document}
